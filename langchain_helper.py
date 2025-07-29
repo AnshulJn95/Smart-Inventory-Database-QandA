@@ -19,7 +19,7 @@ load_dotenv()  # take environment variables from .env (especially google api key
 
 def get_few_shot_db_chain():
     db_user = "root"
-    db_password = "Ilove958"  # Updated password without @ symbol
+    db_password = "your_password"
     db_host = "localhost"
     db_name = "Sample_DB"
 
