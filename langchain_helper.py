@@ -14,7 +14,7 @@ import os
 import urllib.parse
 from dotenv import load_dotenv
 
-load_dotenv()  # take environment variables from .env (especially google api key)
+load_dotenv() 
 
 
 def get_few_shot_db_chain():
@@ -23,18 +23,16 @@ def get_few_shot_db_chain():
     db_host = "localhost"
     db_name = "Sample_DB"
 
-    # URL encode password to handle special characters safely
     encoded_password = urllib.parse.quote_plus(db_password)
 
     db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{encoded_password}@{db_host}/{db_name}",
                               sample_rows_in_table_info=3)
 
-    # Use Google Gemini instead of deprecated Palm
     llm = ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
         google_api_key=os.environ["GOOGLE_API_KEY"],
         temperature=0.1,
-        convert_system_message_to_human=True  # This helps with SQL chain compatibility
+        convert_system_message_to_human=True 
     )
 
     embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
@@ -71,7 +69,7 @@ def get_few_shot_db_chain():
         example_prompt=example_prompt,
         prefix=mysql_prompt,
         suffix=PROMPT_SUFFIX,
-        input_variables=["input", "table_info", "top_k"],  # These variables are used in the prefix and suffix
+        input_variables=["input", "table_info", "top_k"],
     )
 
     chain = SQLDatabaseChain.from_llm(llm, db, verbose=True, prompt=few_shot_prompt)
