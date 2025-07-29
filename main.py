@@ -8,11 +8,9 @@ question = st.text_input("Question: ")
 if question:
     try:
         chain = get_few_shot_db_chain()
-        # Use invoke instead of deprecated run method
         response = chain.invoke({"query": question})
 
         st.header("Answer")
-        # Handle both old and new response formats
         if isinstance(response, dict):
             st.write(response.get('result', response))
         else:
